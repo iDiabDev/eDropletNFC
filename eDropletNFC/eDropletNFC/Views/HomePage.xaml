@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Class="eDropletNFC.Views.HomePage">
+    
+    <ContentPage.Content>
+
+        <Grid x:Name="CgmGrid" RowSpacing="2" ColumnSpacing="5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="homeT1" Text="{Binding homeT1Txt}" Grid.Row="0" Grid.Column="0" BackgroundColor="Black" TextColor="White" MaxLines="3"/>
+            <Label x:Name="homeT2" Text="{Binding homeT2Txt}" Grid.Row="1" Grid.Column="0" BackgroundColor="Black" TextColor="White" MaxLines="3"/>
+            <Label x:Name="homeT3" Text="{Binding homeT3Txt}" Grid.Row="2" Grid.Column="0" BackgroundColor="Black" TextColor="White" MaxLines="3"/>
+            <Label x:Name="homeT4" Text="{Binding homeT4Txt}" Grid.Row="2" Grid.Column="1" BackgroundColor="Black" TextColor="White" MaxLines="3"/>
+            <Label x:Name="homeBG" Text="{Binding homeBGTxt}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" BackgroundColor="Black" TextColor="White" FontSize="80" />
+
+
+            <busyindicator:SfBusyIndicator
+                x:Name="busyindicatorHome" 
+                AnimationType="Cupertino"
+                EnableAnimation="True"
+                ViewBoxWidth = "120" 
+                ViewBoxHeight="120" 
+                TextColor="White"
+                Title="NFC SCAN..."
+                TitlePlacement="Bottom"
+                TextSize="20"
+                IsBusy="{Binding busyIndHomeIsBusy}"
+                Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3"
+            />
+
+            <chart:SfChart x:Name="chartCGM" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"                      
+                       BackgroundColor="Black"  >
+
+                <chart:SfChart.Title>
+                    <chart:ChartTitle Text="{Binding chartTitle}" TextColor="White" TextAlignment="Center" BackgroundColor="Black" FontSize="18" FontAttributes="Bold"/>
+                </chart:SfChart.Title>
+
+                <chart:SfChart.ChartBehaviors>
+                    <chart:ChartZoomPanBehavior EnableSelectionZooming="True" ZoomMode="X" />
+                </chart:SfChart.ChartBehaviors>
+
+                <chart:SfChart.PrimaryAxis>
+                    <chart:DateTimeAxis IntervalType="Minutes" >
+                        <chart:DateTimeAxis.LabelStyle>
+                            <chart:ChartAxisLabelStyle>
+                                <chart:ChartAxisLabelStyle.LabelFormat>
+                                    <OnPlatform x:TypeArguments="x:String" iOS="HH:mm" WinPhone="HH:mm" Android="HH:mm" />
+                                </chart:ChartAxisLabelStyle.LabelFormat>
+                            </chart:ChartAxisLabelStyle>
+                        </chart:DateTimeAxis.LabelStyle>
+                    </chart:DateTimeAxis>
+                </chart:SfChart.PrimaryAxis>
+                
+                <chart:SfChart.SecondaryAxis>
+                    <chart:NumericalAxis Minimum="0" Maximum="{Binding graphMaxValue}">
+                        <chart:NumericalAxis.StripLines>
+                            <chart:NumericalStripLine Start="{Binding bandStart}" Width ="{Binding bandEnd}"  FillColor="LightGreen"/>
+                        </chart:NumericalAxis.StripLines>
+                    </chart:NumericalAxis>
+                </chart:SfChart.SecondaryAxis>
+
+                <chart:SfChart.Series>
+
+                    <chart:LineSeries ItemsSource="{Binding pointDataT}"  EnableTooltip="True" StrokeWidth="3" Color="Transparent">
+                        <chart:LineSeries.DataMarker>
+                            <chart:ChartDataMarker ShowLabel="False" 
+						   ShowMarker="False"
+						   MarkerType="Triangle"
+						   MarkerWidth="10" 
+						   MarkerHeight="10"
+						   MarkerColor="White" 
+						   MarkerBorderColor="Green"
+						   MarkerBorderWidth="1"/>
+                        </chart:LineSeries.DataMarker>
+                    </chart:LineSeries>
+
+                    <chart:LineSeries ItemsSource="{Binding pointDataH}" EnableTooltip="False" StrokeWidth="3" Color="Transparent">
+                        <chart:LineSeries.DataMarker>
+                            <chart:ChartDataMarker ShowLabel="False" 
+						   ShowMarker="False"
+						   MarkerType="Diamond"
+						   MarkerWidth="10" 
+						   MarkerHeight="10"
+						   MarkerColor="White" 
+						   MarkerBorderColor="Red"
+						   MarkerBorderWidth="1"/>
+                        </chart:LineSeries.DataMarker>
+                    </chart:LineSeries>
+
+                    <chart:LineSeries ItemsSource="{Binding graphData}" Label="Current BG" ShowTrackballInfo="True"  EnableTooltip="True" StrokeWidth="3" Color="White">
+                    </chart:LineSeries>
+
+                    <chart:LineSeries ItemsSource="{Binding nullData}"  Color="Transparent">
+                    </chart:LineSeries>
+
+
+                </chart:SfChart.Series>
+
+            </chart:SfChart>
+
+
+            <buttons:SfButton x:Name="homeScan" Text="{Binding btnScanHomeTxt}" Command="{Binding btnScanHomeCmd, Mode=TwoWay}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" FontSize="Large" CornerRadius="10"/>
+
+        </Grid>
+
+    </ContentPage.Content>
+
+</ContentPage>

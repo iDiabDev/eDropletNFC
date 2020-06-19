@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:range="clr-namespace:Syncfusion.SfRangeSlider.XForms;assembly=Syncfusion.SfRangeSlider.XForms"
+             x:Class="eDropletNFC.Views.SetupPage">
+
+    <ContentPage.Content>
+        <Grid x:Name="SetupGrid" BackgroundColor="Black" RowSpacing="3" ColumnSpacing="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{Binding BGunits}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" FontSize="18" TextColor="White"/>
+            <syncfusion:SfRadioGroup x:Name="unitsGroup" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand">
+                <syncfusion:SfRadioButton x:Name="mgdl" Text="mg/dl" IsChecked="{Binding isMgdlSelected, Mode=TwoWay}"  StateChanged="Mgdl_StateChanged" TextColor="White" CheckedColor="Green" UncheckedColor="White" />
+                <syncfusion:SfRadioButton x:Name="mmol" Text="mmol/l" IsChecked="{Binding isMmolSelected, Mode=TwoWay}" StateChanged="Mmol_StateChanged" TextColor="White" CheckedColor="Green" UncheckedColor="White" />
+            </syncfusion:SfRadioGroup>
+
+            <Label Text="{Binding BGtarget}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="3" HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" FontSize="18" TextColor="White"/>
+            <range:SfRangeSlider x:Name="targetSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  RangeChanging="TargetSlider_RangeChanging" ThumbSize="2" StepFrequency="10" ValueChangeMode="OnThumb" ToolTipPlacement="TopLeft"  TickFrequency="10" TickPlacement="Outside"  TrackSelectionThickness="5" TrackThickness="5" TrackColor="White" TrackSelectionColor="Green"  Minimum="70" Maximum="190" RangeStart="{Binding targetSetupStart}"  RangeEnd="{Binding targetSetupEnd}" ShowRange="true" ShowValueLabel="true" Orientation="Horizontal"/>
+
+            <Label IsVisible="False" Text="Alarms" Grid.Row="4" Grid.Column="0"  HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" FontSize="18" TextColor="White"/>
+            <range:SfRangeSlider IsVisible="False" x:Name="alarmSlider" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" RangeChanging="AlarmSlider_RangeChanging" ThumbSize="2" StepFrequency="10" ValueChangeMode="OnThumb" ToolTipPlacement="TopLeft" TickFrequency="20"  TickPlacement="BottomRight"  TrackSelectionThickness="5" TrackThickness="5" TrackColor="Red" TrackSelectionColor="White"  Minimum="20" Maximum="250" RangeStart="{Binding alarmSetupLow, Mode=TwoWay}"  RangeEnd="{Binding alarmSetupHigh, Mode=TwoWay}" ShowRange="true" Orientation="Horizontal"/>
+
+
+        </Grid>
+
+    </ContentPage.Content>
+
+</ContentPage>
